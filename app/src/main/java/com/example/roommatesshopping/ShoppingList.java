@@ -2,28 +2,29 @@ package com.example.roommatesshopping;
 
 public class ShoppingList {
 
-    private int id;
+    private String name;
 
     public ShoppingList(){
-        this.id = -1;
+
+        this.name = null;
     }
 
-    public ShoppingList(int id){
-        this.id = id;
+    public ShoppingList(String name) {
+        this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    @Override
     public String toString() {
         return "ShoppingList{" +
-                "id=" + id +
+                "name='" + name + '\'' +
                 '}';
     }
-
 }
