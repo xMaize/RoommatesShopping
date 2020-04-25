@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "993641269440",
+    "firebase_url": "https://roommatesshopping-ee46f.firebaseio.com",
+    "project_id": "roommatesshopping-ee46f",
+    "storage_bucket": "roommatesshopping-ee46f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993641269440:android:258708944f44989f7d0525",
+        "android_client_info": {
+          "package_name": "com.example.roommatesshopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993641269440-far937kks0mkg7pdrl8rb416af35d6s7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.roommatesshopping",
+            "certificate_hash": "76e4874af5f2e272cdc09ae8b771270090704313"
+          }
+        },
+        {
+          "client_id": "993641269440-hpktnf0a37qjn51au7tvq5ismj3ulsin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd7oYOdbZ0MwTjxr2e0ZD2J9UIqPcbIb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993641269440-hpktnf0a37qjn51au7tvq5ismj3ulsin.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
