@@ -1,0 +1,38 @@
+package com.example.roommatesshopping;
+
+public class User {
+
+    private String userEmail;
+    private String userKey;
+
+    public User (){
+        this.userEmail = null;
+    }
+
+    public User (String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userEmail='" + userEmail + '\'' +
+                '}';
+    }
+}

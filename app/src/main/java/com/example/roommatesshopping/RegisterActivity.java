@@ -12,10 +12,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -44,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
             final String userPassword = password.getText().toString();
 
             final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            final User userObj = new User(userEmail);
 
             // This is how we can create a new user using an email/password combination.
             // Note that we also add an onComplete listener, which will be invoked once
@@ -77,6 +82,26 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("users");
+
+            myRef.push().setValue(userObj)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText( getApplicationContext(), "Successfully created user with id: " + userObj.getUserEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener( new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            Toast.makeText( getApplicationContext(), "Failed to create a user with id: " + userObj.getUserEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
         }
     }
 }

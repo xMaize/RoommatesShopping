@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "993641269440",
-    "firebase_url": "https://roommatesshopping-ee46f.firebaseio.com",
-    "project_id": "roommatesshopping-ee46f",
-    "storage_bucket": "roommatesshopping-ee46f.appspot.com"
+    "project_number": "921108280423",
+    "firebase_url": "https://roommatesshopping-90b2a.firebaseio.com",
+    "project_id": "roommatesshopping-90b2a",
+    "storage_bucket": "roommatesshopping-90b2a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:993641269440:android:258708944f44989f7d0525",
+        "mobilesdk_app_id": "1:921108280423:android:8256acbbf0f93d1d0c50c2",
         "android_client_info": {
           "package_name": "com.example.roommatesshopping"
         }
       },
       "oauth_client": [
         {
-          "client_id": "993641269440-far937kks0mkg7pdrl8rb416af35d6s7.apps.googleusercontent.com",
+          "client_id": "921108280423-16q1dkqptiaov71c9be26248ica5ffp6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.roommatesshopping",
-            "certificate_hash": "76e4874af5f2e272cdc09ae8b771270090704313"
+            "certificate_hash": "ac064bdd54d44948758f631b9844df4c8d963fe3"
           }
         },
         {
-          "client_id": "993641269440-hpktnf0a37qjn51au7tvq5ismj3ulsin.apps.googleusercontent.com",
+          "client_id": "921108280423-t90lmn6m9o5odj6m4qpi9arbaecaf7pr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCd7oYOdbZ0MwTjxr2e0ZD2J9UIqPcbIb8"
+          "current_key": "AIzaSyBmWjFVayizN5Dtohq2ciC5KfZzbnatryY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "993641269440-hpktnf0a37qjn51au7tvq5ismj3ulsin.apps.googleusercontent.com",
+              "client_id": "921108280423-t90lmn6m9o5odj6m4qpi9arbaecaf7pr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

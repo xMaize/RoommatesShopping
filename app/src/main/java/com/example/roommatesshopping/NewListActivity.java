@@ -2,6 +2,7 @@ package com.example.roommatesshopping;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ public class NewListActivity extends AppCompatActivity {
 
     private EditText listNameView;
     private Button createButton;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,10 @@ public class NewListActivity extends AppCompatActivity {
         listNameView = findViewById(R.id.listName);
 
         createButton.setOnClickListener(new CreateButtonListener());
+        Intent intent = getIntent();
+        userEmail = intent.getStringExtra("Email");
+        Log.d(DEBUG_TAG, "Email: " + userEmail);
+
 
     }
 
@@ -45,7 +51,9 @@ public class NewListActivity extends AppCompatActivity {
             final ShoppingList shoppingList = new ShoppingList(listName);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("shoppinglists");
+            DatabaseReference myRef = database.getReference("users").child("shoppinglists");
+
+            Log.d(DEBUG_TAG, "Key: " + myRef.getKey());
 
             DatabaseReference newRef = myRef.push();
 

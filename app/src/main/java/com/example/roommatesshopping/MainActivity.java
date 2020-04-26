@@ -1,5 +1,6 @@
 package com.example.roommatesshopping;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,11 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d( DEBUG_TAG, "JobLead: MainActivity.onActivityResult()" );
+        Log.d( DEBUG_TAG, "RoommatesShopping: MainActivity.onActivityResult()" );
 
         // check if it is a sign in activity result
         if( requestCode == RC_SIGN_IN ) {
@@ -90,11 +96,19 @@ public class MainActivity extends AppCompatActivity {
 
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                User userObj = new User(user.getEmail());
 
-                Log.i( "FireBase Test", "Signed in as: " + user.getEmail() );
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("users");
+                myRef.child(user.getUid()).setValue(user);
+
+
+                Log.d( DEBUG_TAG, "Signed in as: " + user.getEmail());
+
 
                 // after a successful sign in, start the job leads management activity
                 Intent intent = new Intent( this, ShoppingListManagementActivity.class );
+                intent.putExtra("Email", user.getEmail());
                 startActivity( intent );
 
             } else {
