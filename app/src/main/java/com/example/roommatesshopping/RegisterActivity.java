@@ -28,11 +28,14 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private Button submit;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        myRef = FirebaseDatabase.getInstance().getReference();
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -69,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d( DEBUG_TAG, "createUserWithEmail: success" );
 
-                                FirebaseUser user = mAuth.getCurrentUser();
+                                addNewUser(task.getResult().getUser());
 
                                 Intent intent = new Intent( RegisterActivity.this, ShoppingListManagementActivity.class );
                                 startActivity( intent );
@@ -83,25 +86,12 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("users");
+        }
 
-            myRef.push().setValue(userObj)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText( getApplicationContext(), "Successfully created user with id: " + userObj.getUserEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener( new OnFailureListener() {
-                        @Override
-                        public void onFailure(Exception e) {
-                            Toast.makeText( getApplicationContext(), "Failed to create a user with id: " + userObj.getUserEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        public void addNewUser(FirebaseUser user){
+            User userObj = new User(user.getEmail());
 
+            myRef.child("users").child(user.getUid()).setValue(userObj);
         }
     }
 }

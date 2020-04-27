@@ -8,8 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingListManagementActivity extends AppCompatActivity {
 
@@ -17,7 +23,7 @@ public class ShoppingListManagementActivity extends AppCompatActivity {
     private Button createList;
     private Button viewLists;
     private Button joinList;
-    private String userEmail;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +35,10 @@ public class ShoppingListManagementActivity extends AppCompatActivity {
         joinList = findViewById(R.id.join);
 
         createList.setOnClickListener(new CreateButtonListener());
-        viewLists.setOnClickListener(new CreateButtonListener2());
+        viewLists.setOnClickListener(new ViewButtonListener());
 
         Intent intent = getIntent();
-        userEmail = intent.getStringExtra("Email");
+        userID = intent.getStringExtra("uid");
 
 
     }
@@ -42,17 +48,17 @@ public class ShoppingListManagementActivity extends AppCompatActivity {
         public void onClick(View v){
 
             Intent intent = new Intent(v.getContext(), NewListActivity.class);
-            intent.putExtra("Email", userEmail);
+            intent.putExtra("uid", userID);
             v.getContext().startActivity(intent);
 
         }
     }
-    private class CreateButtonListener2 implements View.OnClickListener {
+    private class ViewButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v){
 
-            Intent intent = new Intent(v.getContext(), ViewListsActivity.class);
-            intent.putExtra("Email", userEmail);
+            final Intent intent = new Intent(v.getContext(), ViewListsActivity.class);
+            intent.putExtra("uid", userID);
             v.getContext().startActivity(intent);
 
         }

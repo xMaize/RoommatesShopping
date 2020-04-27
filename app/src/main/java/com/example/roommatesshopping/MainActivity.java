@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -96,19 +98,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                User userObj = new User(user.getEmail());
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("users");
-                myRef.child(user.getUid()).setValue(user);
-
 
                 Log.d( DEBUG_TAG, "Signed in as: " + user.getEmail());
 
 
                 // after a successful sign in, start the job leads management activity
                 Intent intent = new Intent( this, ShoppingListManagementActivity.class );
-                intent.putExtra("Email", user.getEmail());
+                intent.putExtra("uid", user.getUid());
                 startActivity( intent );
 
             } else {

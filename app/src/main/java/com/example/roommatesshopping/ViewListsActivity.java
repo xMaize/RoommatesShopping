@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,8 +24,9 @@ public class ViewListsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter recyclerAdapter;
-
     private List<ShoppingList> shoppingLists;
+    private List<String> listKeys;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +39,48 @@ public class ViewListsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users");
+        userID = getIntent().getStringExtra("uid");
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("shoppinglists");
 
         shoppingLists = new ArrayList<ShoppingList>();
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                DatabaseReference otherRef = database.getReference("users").child(userID).child("shoppinglists");
+
+                otherRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                            String listId = postSnapshot.getValue(String.class);
+                            Log.d(DEBUG_TAG, listId);
+                            listKeys.add(listId);
+                            Log.d(DEBUG_TAG, "Size: " + listKeys.size());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("The read failed: " + databaseError.getMessage());
+                    }
+                });
+
                 for( DataSnapshot postSnapshot: dataSnapshot.getChildren() ) {
-                    ShoppingList shoppingList = postSnapshot.getValue(ShoppingList.class);
-                    Log.d(DEBUG_TAG, "Error: " + Boolean.toString(shoppingList == null));
-                    shoppingList.setKey(postSnapshot.getKey());
-                    shoppingLists.add(shoppingList);
-                    Log.d( DEBUG_TAG, "ViewListsActivity.onCreate(): added: " + shoppingList );
+                    String currentKey = postSnapshot.getKey();
+                    for(String listKey: listKeys){
+                        Log.d(DEBUG_TAG, listKey);
+                        Log.d(DEBUG_TAG, currentKey);
+                        if(currentKey.equals(listKey)){
+                            ShoppingList shoppingList = postSnapshot.getValue(ShoppingList.class);
+                            shoppingList.setKey(postSnapshot.getKey());
+                            shoppingLists.add(shoppingList);
+                        }
+                    }
+
                 }
                 Log.d( DEBUG_TAG, "ViewListsActivity.onCreate(): setting recyclerAdapter" );
 

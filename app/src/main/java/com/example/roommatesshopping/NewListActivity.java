@@ -24,7 +24,7 @@ public class NewListActivity extends AppCompatActivity {
 
     private EditText listNameView;
     private Button createButton;
-    private String userEmail;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,8 @@ public class NewListActivity extends AppCompatActivity {
 
         createButton.setOnClickListener(new CreateButtonListener());
         Intent intent = getIntent();
-        userEmail = intent.getStringExtra("Email");
-        Log.d(DEBUG_TAG, "Email: " + userEmail);
+        userID = intent.getStringExtra("uid");
+        Log.d(DEBUG_TAG, "ID: " + userID);
 
 
     }
@@ -51,7 +51,7 @@ public class NewListActivity extends AppCompatActivity {
             final ShoppingList shoppingList = new ShoppingList(listName);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("users").child("shoppinglists");
+            DatabaseReference myRef = database.getReference("shoppinglists");
 
             Log.d(DEBUG_TAG, "Key: " + myRef.getKey());
 
@@ -61,7 +61,8 @@ public class NewListActivity extends AppCompatActivity {
                     .addOnSuccessListener( new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-
+                            Toast.makeText( getApplicationContext(), "Successfully created a Shopping list for " + shoppingList.getName(),
+                                    Toast.LENGTH_SHORT).show();
                             // Clear the EditTexts for next use.
                             listNameView.setText("");
                         }
@@ -73,6 +74,10 @@ public class NewListActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
+
+            myRef = database.getReference("users").child(userID).child("shoppinglists");
+
+            myRef.push().setValue(newRef.getKey());
 
             Log.d(DEBUG_TAG, "Key: " + newRef.getKey());
 
