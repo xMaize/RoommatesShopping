@@ -3,7 +3,7 @@ package com.example.roommatesshopping;
 public class User {
 
     private String userEmail;
-    private String userKey;
+    private String userHousehold;
 
     public User (){
         this.userEmail = null;
@@ -17,12 +17,12 @@ public class User {
         return userEmail;
     }
 
-    public String getUserKey() {
-        return userKey;
+    public String getUserHousehold() {
+        return userHousehold;
     }
 
-    public void setUserKey(String userKey) {
-        this.userKey = userKey;
+    public void setUserHousehold(String userHousehold) {
+        this.userHousehold = userHousehold;
     }
 
     public void setUserEmail(String userEmail) {

@@ -36,6 +36,7 @@ public class ShoppingListManagementActivity extends AppCompatActivity {
 
         createList.setOnClickListener(new CreateButtonListener());
         viewLists.setOnClickListener(new ViewButtonListener());
+        joinList.setOnClickListener(new JoinButtonListener());
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("uid");
@@ -63,4 +64,13 @@ public class ShoppingListManagementActivity extends AppCompatActivity {
 
         }
     }
+    private class JoinButtonListener implements  View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            final Intent intent = new Intent(v.getContext(), JoinListActivity.class);
+            intent.putExtra("uid", userID);
+            v.getContext().startActivity(intent);
+        }
+    }
+
 }

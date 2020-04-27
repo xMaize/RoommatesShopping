@@ -75,9 +75,10 @@ public class NewListActivity extends AppCompatActivity {
                         }
                     });
 
-            myRef = database.getReference("users").child(userID).child("shoppinglists");
 
-            myRef.push().setValue(newRef.getKey());
+            myRef = myRef.child(newRef.getKey());
+
+            myRef.push().setValue(userID);
 
             Log.d(DEBUG_TAG, "Key: " + newRef.getKey());
 

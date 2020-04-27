@@ -1,5 +1,6 @@
 package com.example.roommatesshopping;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,53 +47,25 @@ public class ViewListsActivity extends AppCompatActivity {
 
         shoppingLists = new ArrayList<ShoppingList>();
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                DatabaseReference otherRef = database.getReference("users").child(userID).child("shoppinglists");
-
-                otherRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                            String listId = postSnapshot.getValue(String.class);
-                            Log.d(DEBUG_TAG, listId);
-                            listKeys.add(listId);
-                            Log.d(DEBUG_TAG, "Size: " + listKeys.size());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        System.out.println("The read failed: " + databaseError.getMessage());
-                    }
-                });
-
-                for( DataSnapshot postSnapshot: dataSnapshot.getChildren() ) {
-                    String currentKey = postSnapshot.getKey();
-                    for(String listKey: listKeys){
-                        Log.d(DEBUG_TAG, listKey);
-                        Log.d(DEBUG_TAG, currentKey);
-                        if(currentKey.equals(listKey)){
-                            ShoppingList shoppingList = postSnapshot.getValue(ShoppingList.class);
-                            shoppingList.setKey(postSnapshot.getKey());
+                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                    ShoppingList shoppingList = postSnapshot.getValue(ShoppingList.class);
+                    shoppingList.setKey(postSnapshot.getKey());
+                    for(DataSnapshot postSnapshotTwo: postSnapshot.getChildren()) {
+                        if (postSnapshotTwo.getValue(String.class).equals(userID)){
                             shoppingLists.add(shoppingList);
                         }
                     }
-
                 }
-                Log.d( DEBUG_TAG, "ViewListsActivity.onCreate(): setting recyclerAdapter" );
-
-                // Now, create a ListsRecyclerAdapter to populate a ReceyclerView to display the job leads.
-
-                recyclerAdapter = new ListsRecyclerAdapter( shoppingLists );
+                recyclerAdapter = new ListsRecyclerAdapter(shoppingLists);
                 recyclerView.setAdapter( recyclerAdapter );
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
