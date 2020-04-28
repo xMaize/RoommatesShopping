@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,49 +19,48 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewListsActivity extends AppCompatActivity {
+public class ViewItemsActivity extends AppCompatActivity {
 
-    public static final String DEBUG_TAG = "ViewListsActivity";
+    public static final String DEBUG_TAG = "ViewItemsActivity";
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter recyclerAdapter;
-    private List<ShoppingList> shoppingLists;
-    private List<String> listKeys;
-    private String userID;
+    private List<Item> items;
+    private String listKey;
+    private Button addItemButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_lists);
+        setContentView(R.layout.activity_view_items);
 
         recyclerView = findViewById(R.id.recyclerView);
+        addItemButton  = findViewById(R.id.addItem);
+        addItemButton.setOnClickListener(new AddItemButtonListener());
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        userID = getIntent().getStringExtra("uid");
+        listKey = getIntent().getStringExtra("listKey");
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("shoppinglists");
+        DatabaseReference myRef = database.getReference("items");
 
-        shoppingLists = new ArrayList<ShoppingList>();
+        items = new ArrayList<Item>();
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    ShoppingList shoppingList = postSnapshot.getValue(ShoppingList.class);
-                    shoppingList.setKey(postSnapshot.getKey());
-                    for(DataSnapshot postSnapshotTwo: postSnapshot.getChildren()) {
-                        if (postSnapshotTwo.getValue(String.class).equals(userID)){
-                            shoppingLists.add(shoppingList);
-                        }
+                    Item item = postSnapshot.getValue(Item.class);
+                    String tempKey = postSnapshot.getChildren().iterator().next().getValue(String.class);
+                    if(tempKey.equals(listKey)){
+                        items.add(item);
                     }
                 }
-                recyclerAdapter = new ListsRecyclerAdapter(shoppingLists);
-                recyclerView.setAdapter( recyclerAdapter );
+                recyclerAdapter = new ItemRecyclerAdapter(items);
+                recyclerView.setAdapter(recyclerAdapter);
             }
 
             @Override
@@ -69,34 +71,43 @@ public class ViewListsActivity extends AppCompatActivity {
 
     }
 
+    private class AddItemButtonListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v){
+            Intent intent = new Intent(v.getContext(), NewItemActivity.class);
+            intent.putExtra("listKey", listKey);
+            v.getContext().startActivity(intent);
+        }
+    }
+
     @Override
     protected void onResume() {
-        Log.d( DEBUG_TAG, "ViewListsActivity.onResume()" );
+        Log.d( DEBUG_TAG, "ViewItemsActivity.onResume()" );
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        Log.d( DEBUG_TAG, "ViewListsActivity.onPause()" );
+        Log.d( DEBUG_TAG, "ViewItemsActivity.onPause()" );
         super.onPause();
     }
 
     // These activity callback methods are not needed and are for educational purposes only
     @Override
     protected void onStart() {
-        Log.d( DEBUG_TAG, "ViewListsActivity.onStart()" );
+        Log.d( DEBUG_TAG, "ViewItemsActivity.onStart()" );
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        Log.d( DEBUG_TAG, "ViewListsActivity.onStop()" );
+        Log.d( DEBUG_TAG, "ViewItemsActivity.onStop()" );
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d( DEBUG_TAG, "ViewListsActivity.onDestroy()" );
+        Log.d( DEBUG_TAG, "ViewItemsActivity.onDestroy()" );
         super.onDestroy();
     }
 
@@ -105,4 +116,5 @@ public class ViewListsActivity extends AppCompatActivity {
         Log.d( DEBUG_TAG, "ViewListsActivity.onRestart()" );
         super.onRestart();
     }
+
 }

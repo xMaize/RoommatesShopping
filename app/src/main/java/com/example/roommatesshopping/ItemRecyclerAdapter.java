@@ -23,16 +23,12 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
         TextView itemName;
         TextView quantity;
-        TextView price;
-        TextView purchaser;
 
         public ItemHolder(View itemView){
             super(itemView);
 
             itemName = itemView.findViewById(R.id.itemName);
             quantity = itemView.findViewById(R.id.quantity);
-            price = itemView.findViewById(R.id.price);
-            purchaser = itemView.findViewById(R.id.purchaser);
         }
 
     }
@@ -50,9 +46,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         Log.d( DEBUG_TAG, "onBindViewHolder: " + item );
 
         holder.itemName.setText( item.getItemName());
-        holder.quantity.setText(item.getQuantity());
-        holder.price.setText(Double.toString(item.getPrice()));
-        holder.purchaser.setText(item.getNameOfPurchaser());
+        holder.quantity.setText(Integer.toString(item.getQuantity()));
     }
 
     @Override
