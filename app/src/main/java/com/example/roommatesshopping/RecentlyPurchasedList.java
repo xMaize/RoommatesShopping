@@ -2,27 +2,27 @@ package com.example.roommatesshopping;
 
 public class RecentlyPurchasedList {
 
-    private int id;
+    private String name;
 
     public RecentlyPurchasedList(){
-        this.id = -1;
+        this.name = null;
     }
 
-    public RecentlyPurchasedList(int id){
-        this.id = id;
+    public RecentlyPurchasedList(String name){
+        this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getname() {
+        return name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setname(String name) {
+        this.name = name;
     }
 
     public String toString() {
         return "RecentlyPurchasedList{" +
-                "id=" + id +
+                "name=" + name +
                 '}';
     }
 

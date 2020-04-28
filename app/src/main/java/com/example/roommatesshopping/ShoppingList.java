@@ -4,10 +4,12 @@ public class ShoppingList {
 
     private String name;
     private String key;
+    private String purchasedList;
 
     public ShoppingList(){
 
         this.name = null;
+        this.purchasedList = null;
     }
 
     public ShoppingList(String name) {
@@ -25,6 +27,14 @@ public class ShoppingList {
     public String getKey() { return key;}
 
     public void setKey(String key) { this.key = key; }
+
+    public String getPurchasedList() {
+        return purchasedList;
+    }
+
+    public void setPurchasedList(String purchasedList) {
+        this.purchasedList = purchasedList;
+    }
 
     @Override
     public String toString() {

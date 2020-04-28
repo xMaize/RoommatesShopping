@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,12 +24,23 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
         TextView itemName;
         TextView quantity;
+        Button purchaseButton;
 
         public ItemHolder(View itemView){
             super(itemView);
 
             itemName = itemView.findViewById(R.id.itemName);
             quantity = itemView.findViewById(R.id.quantity);
+            purchaseButton = itemView.findViewById(R.id.purchase);
+
+            purchaseButton.setOnClickListener(new PurchaseButtonListener());
+        }
+        private class PurchaseButtonListener implements View.OnClickListener{
+            @Override
+            public void onClick(View v){
+
+
+            }
         }
 
     }
@@ -46,7 +58,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         Log.d( DEBUG_TAG, "onBindViewHolder: " + item );
 
         holder.itemName.setText( item.getItemName());
-        holder.quantity.setText(Integer.toString(item.getQuantity()));
+        holder.quantity.setText("Quantity: " + Integer.toString(item.getQuantity()));
     }
 
     @Override
