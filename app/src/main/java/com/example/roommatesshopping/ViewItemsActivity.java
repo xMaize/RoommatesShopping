@@ -45,7 +45,7 @@ public class ViewItemsActivity extends AppCompatActivity {
         listKey = getIntent().getStringExtra("listKey");
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("items");
+        DatabaseReference myRef = database.getReference("items").child(listKey);
 
         items = new ArrayList<Item>();
 
@@ -54,12 +54,9 @@ public class ViewItemsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
                     Item item = postSnapshot.getValue(Item.class);
-                    String tempKey = postSnapshot.getChildren().iterator().next().getValue(String.class);
-                    if(tempKey.equals(listKey)){
-                        items.add(item);
-                    }
+                    items.add(item);
                 }
-                recyclerAdapter = new ItemRecyclerAdapter(items);
+                recyclerAdapter = new ItemRecyclerAdapter(items, listKey);
                 recyclerView.setAdapter(recyclerAdapter);
             }
 

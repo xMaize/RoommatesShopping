@@ -15,7 +15,6 @@
         <activity android:name=".ListsRecyclerAdapter" />
         <activity android:name=".ViewListsActivity" />
         <activity android:name=".NewListActivity" />
-        <activity android:name=".ReviewItemsActivity" />
         <activity android:name=".ShoppingListManagementActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">

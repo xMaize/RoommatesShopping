@@ -48,11 +48,9 @@ public class NewItemActivity extends AppCompatActivity {
             item.setQuantity(Integer.parseInt(quantity.getText().toString()));
 
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("items");
+            DatabaseReference myRef = database.getReference("items").child(listKey);
 
-            DatabaseReference newRef = myRef.push();
-
-            newRef.setValue(item)
+            myRef.push().setValue(item)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -69,9 +67,6 @@ public class NewItemActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
-
-            myRef = myRef.child(newRef.getKey());
-            myRef.push().setValue(listKey);
         }
     }
 
