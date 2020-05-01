@@ -2,6 +2,7 @@ package com.example.roommatesshopping;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+/**
+ * This is the RecyclerAdapter that is used for our items
+ * where the functions of an item are created
+ */
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.ItemHolder>{
 
     public static final String DEBUG_TAG = "ItemRecyclerAdapter";
@@ -29,11 +34,19 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     private List<Item> itemList;
     private String listKey;
 
+    /**
+     * Constructor
+     * @param itemList list of items this item will belong to
+     * @param listKey list key for the shopping list this belongs to
+     */
     public ItemRecyclerAdapter( List<Item> itemList, String listKey) {
         this.itemList = itemList;
         this.listKey = listKey;
     }
 
+    /**
+     * Class for the holder for the items
+     */
     class ItemHolder extends RecyclerView.ViewHolder {
 
         TextView itemName;
@@ -49,9 +62,15 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
             purchaseButton.setOnClickListener(new PurchaseButtonListener());
         }
+
+        /**
+         * Overridden method for the purchase button listener.
+         * Inside here is where the user can purchase an item
+         */
         private class PurchaseButtonListener implements View.OnClickListener{
             @Override
-            public void onClick(View v){
+            public void onClick(final View v){
+                //Creates an alert dialog that allows the user to input a price they purchased for
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Confirm Purchase");
 
@@ -61,6 +80,8 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
                 builder.setView(input);
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    //Once the user inputs a price, it will add the item to the purchased items list
+                    //and remove it from the shopping list it is currently in
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -68,6 +89,8 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
                         Log.d(DEBUG_TAG, "You are here.");
 
                         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            //This is where we clone the item in the shopping list and create one in the
+                            //purchased items list and remove it.
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String removeKey = "";
@@ -94,6 +117,10 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
                             }
                         });
+                        //Intent to refresh the page once an item is purchased to remove it visually
+                        Intent intent = new Intent(v.getContext(), ViewListsActivity.class);
+                        intent.putExtra("listKey", listKey);
+                        v.getContext().startActivity(intent);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -110,12 +137,23 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     }
 
+    /**
+     * Overridden method for view holders when this class is called
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType ) {
         View view = LayoutInflater.from( parent.getContext()).inflate( R.layout.item, parent, false );
         return new ItemHolder( view );
     }
 
+    /**
+     * Overridden method that sets the values of what should be displayed
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder( ItemHolder holder, int position ) {
         Item item = itemList.get( position );
